@@ -22,18 +22,20 @@
     <!-- Sales Summary Section -->
     <section id="sales-summary" class="dashboard-section">
         <h2>Sales Summary</h2>
-        <table id="sales-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Product Name</th>
-                    <th>Quantity Sold</th>
-                    <th>Unit Price (GHS)</th>
-                    <th>Total Sales (GHS)</th>
-                </tr>
-            </thead>
-            <tbody id="sales-table-body"></tbody>
-        </table>
+        <div class="table-container">
+            <table id="sales-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Product Name</th>
+                        <th>Quantity Sold</th>
+                        <th>Unit Price (GHS)</th>
+                        <th>Total Sales (GHS)</th>
+                    </tr>
+                </thead>
+                <tbody id="sales-table-body"></tbody>
+            </table>
+        </div>
         <div class="summary-stats">
             <p><strong>Total Sales:</strong> <span id="total-sales"></span> GHS</p>
             <p><strong>Total Orders:</strong> <span id="total-orders"></span></p>
@@ -50,39 +52,43 @@
     <!-- Inventory Tracker Section -->
     <section id="inventory-tracker" class="dashboard-section">
         <h2>Inventory Tracker</h2>
-        <table id="inventory-table">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Opening Stock</th>
-                    <th>Stock In</th>
-                    <th>Stock Out</th>
-                    <th>Closing Stock</th>
-                    <th>Reorder Level</th>
-                    <th>Stock Indicator</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="inventory-table-body"></tbody>
-        </table>
+        <div class="table-container">
+            <table id="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Opening Stock</th>
+                        <th>Stock In</th>
+                        <th>Stock Out</th>
+                        <th>Closing Stock</th>
+                        <th>Reorder Level</th>
+                        <th>Stock Indicator</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-table-body"></tbody>
+            </table>
+        </div>
     </section>
 
     <!-- Customer Orders Section -->
     <section id="customer-orders" class="dashboard-section">
         <h2>Customer Orders</h2>
-        <table id="orders-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Customer Name</th>
-                    <th>Product Ordered</th>
-                    <th>Quantity</th>
-                    <th>Contact</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="orders-table-body"></tbody>
-        </table>
+        <div class="table-container">
+            <table id="orders-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Customer Name</th>
+                        <th>Product Ordered</th>
+                        <th>Quantity</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-table-body"></tbody>
+            </table>
+        </div>
         <!-- Customer Order Insights -->
         <div class="insights">
             <h3>Order Insights</h3>
