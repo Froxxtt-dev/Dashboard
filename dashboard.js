@@ -25,6 +25,7 @@ const productSales = dashboardData.sales.reduce((acc, sale) => {
 }, {});
 const bestProduct = Object.keys(productSales).reduce((a, b) => productSales[a] > productSales[b] ? a : b);
 document.getElementById('best-product').textContent = `${bestProduct} (${productSales[bestProduct]} units sold)`;
+console.log('Best Product:', bestProduct, productSales[bestProduct]); // Debug log
 
 // Daily Sales Chart
 const dailySales = dashboardData.sales.reduce((acc, sale) => {
@@ -94,6 +95,7 @@ const statusCounts = dashboardData.orders.reduce((acc, order) => {
     acc[order.status] = (acc[order.status] || 0) + 1;
     return acc;
 }, {});
+console.log('Status Counts:', statusCounts); // Debug log
 const deliveredPercentage = ((statusCounts['Delivered'] || 0) / totalOrders * 100).toFixed(1);
 const pendingPercentage = ((statusCounts['Pending'] || 0) / totalOrders * 100).toFixed(1);
 const cancelledPercentage = ((statusCounts['Cancelled'] || 0) / totalOrders * 100).toFixed(1);
@@ -106,5 +108,6 @@ const customerCounts = dashboardData.orders.reduce((acc, order) => {
     acc[order.customer] = (acc[order.customer] || 0) + 1;
     return acc;
 }, {});
-const frequentCustomer = Object.keys(customerCounts).reduce((a, b) => customerCounts[a] > customerCounts[b] ? a : b);
+const frequentCustomer = Object.keys(customerCounts).reduce((a, b) => customerCounts[a] > customerCounts[b] ? a : customerCounts[a] === customerCounts[b] ? (a < b ? a : b) : b);
 document.getElementById('frequent-customer').textContent = `${frequentCustomer} (${customerCounts[frequentCustomer]} orders)`;
+console.log('Frequent Customer:', frequentCustomer, customerCounts[frequentCustomer]); // Debug log
