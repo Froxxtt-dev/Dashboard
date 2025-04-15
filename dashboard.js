@@ -114,11 +114,7 @@ const latestOrderDates = dashboardData.orders.reduce((acc, order) => {
     }
     return acc;
 }, {});
-const frequentCustomer = Object.keys(customerCounts).reduce((a, b) => {
-    if (customerCounts[a] > customerCounts[b]) return a;
-    if (customerCounts[a] < customerCounts[b]) return b;
-    // Tiebreaker: latest order date
-    return latestOrderDates[a] > latestOrderDates[b] ? a : b;
+
 });
 document.getElementById('frequent-customer').textContent = `${frequentCustomer} (${customerCounts[frequentCustomer]} orders)`;
 console.log('Frequent Customer:', frequentCustomer, customerCounts[frequentCustomer]); // Debug log
