@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Operations Dashboard for Eggs & Oil Hub by Bright Sarfo">
+    <meta name="keywords" content="business administration, operations dashboard, Eggs & Oil Hub">
+    <meta name="author" content="Bright Sarfo">
+    <title>Eggs & Oil Hub | Operations Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <h1>Eggs & Oil Hub Operations Dashboard</h1>
+        <p>Tracking sales, inventory, and orders as of April 15, 2025</p>
+    </header>
+
+    <!-- Sales Summary Section -->
+    <section id="sales-summary" class="dashboard-section">
+        <h2>Sales Summary</h2>
+        <table id="sales-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Product Name</th>
+                    <th>Quantity Sold</th>
+                    <th>Unit Price (GHS)</th>
+                    <th>Total Sales (GHS)</th>
+                </tr>
+            </thead>
+            <tbody id="sales-table-body"></tbody>
+        </table>
+        <div class="summary-stats">
+            <p><strong>Total Sales:</strong> <span id="total-sales"></span> GHS</p>
+            <p><strong>Total Orders:</strong> <span id="total-orders"></span></p>
+            <p><strong>Top Selling Item:</strong> <span id="top-selling-item"></span></p>
+        </div>
+    </section>
+
+    <!-- Inventory Tracker Section -->
+    <section id="inventory-tracker" class="dashboard-section">
+        <h2>Inventory Tracker</h2>
+        <table id="inventory-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Opening Stock</th>
+                    <th>Stock In</th>
+                    <th>Stock Out</th>
+                    <th>Closing Stock</th>
+                    <th>Reorder Level</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="inventory-table-body"></tbody>
+        </table>
+    </section>
+
+    <!-- Customer Orders Section -->
+    <section id="customer-orders" class="dashboard-section">
+        <h2>Customer Orders</h2>
+        <table id="orders-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Customer Name</th>
+                    <th>Product Ordered</th>
+                    <th>Quantity</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="orders-table-body"></tbody>
+        </table>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <p>© 2025 Bright Sarfo. All rights reserved.</p>
+    </footer>
+
+    <!-- Data from Excel (embedded as JavaScript object) -->
+    <script>
+        const dashboardData = {
+            sales: [
+                { date: "2025-04-15", product: "Eggs Tray", quantitySold: 5, unitPrice: 30, totalSales: 150 },
+                { date: "2025-04-15", product: "Pure Oil 1L", quantitySold: 3, unitPrice: 20, totalSales: 60 }
+            ],
+            inventory: [
+                { product: "Eggs Tray", openingStock: 50, stockIn: 0, stockOut: 5, closingStock: 45, reorderLevel: 10 },
+                { product: "Pure Oil 1L", openingStock: 30, stockIn: 0, stockOut: 3, closingStock: 27, reorderLevel: 5 }
+            ],
+            orders: [
+                { date: "2025-04-15", customer: "Ama Mensah", product: "Eggs Tray", quantity: 2, contact: "0541234567", status: "Delivered" },
+                { date: "2025-04-15", customer: "Kofi Asamoah", product: "Pure Oil 1L", quantity: 1, contact: "0249876543", status: "Pending" }
+            ],
+            summary: [
+                { date: "2025-04-15", totalSales: 210, totalOrders: 8, topSellingItem: "Eggs Tray" }
+            ]
+        };
+    </script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
