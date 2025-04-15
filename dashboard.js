@@ -18,10 +18,47 @@ document.getElementById('total-sales').textContent = summary.totalSales;
 document.getElementById('total-orders').textContent = summary.totalOrders;
 document.getElementById('top-selling-item').textContent = summary.topSellingItem;
 
-// Populate Inventory Table
+// Sales Insights: Calculate Best Performing Product and Render Chart
+const productSales = dashboardData.sales.reduce((acc, sale) => {
+    acc[sale.product] = (acc[sale.product] || 0) + sale.quantitySold;
+    return acc;
+}, {});
+const bestProduct = Object.keys(productSales).reduce((a, b) => productSales[a] > productSales[b] ? a : b);
+document.getElementById('best-product').textContent = `${bestProduct} (${productSales[bestProduct]} units sold)`;
+
+// Daily Sales Chart
+const dailySales = dashboardData.sales.reduce((acc, sale) => {
+    acc[sale.date] = (acc[sale.date] || 0) + sale.totalSales;
+    return acc;
+}, {});
+const salesDates = Object.keys(dailySales).sort();
+const salesValues = salesDates.map(date => dailySales[date]);
+const salesChart = new Chart(document.getElementById('sales-chart'), {
+    type: 'line',
+    data: {
+        labels: salesDates,
+        datasets: [{
+            label: 'Daily Sales (GHS)',
+            data: salesValues,
+            borderColor: '#ff6f61',
+            backgroundColor: 'rgba(255, 111, 97, 0.2)',
+            fill: true,
+            tension: 0.3
+        }]
+    },
+    options: {
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+// Populate Inventory Table with Stock Indicator
 const inventoryTableBody = document.getElementById('inventory-table-body');
 dashboardData.inventory.forEach(item => {
     const status = item.closingStock <= item.reorderLevel ? 'Low - Reorder Needed' : 'Sufficient';
+    const stockPercentage = (item.closingStock / (item.openingStock || 1)) * 100;
+    const barClass = item.closingStock <= item.reorderLevel ? 'stock-bar low' : 'stock-bar safe';
     const row = document.createElement('tr');
     row.innerHTML = `
         <td>${item.product}</td>
@@ -30,6 +67,7 @@ dashboardData.inventory.forEach(item => {
         <td>${item.stockOut}</td>
         <td>${item.closingStock}</td>
         <td>${item.reorderLevel}</td>
+        <td><div class="${barClass}" style="width: ${stockPercentage}%"></div></td>
         <td class="${item.closingStock <= item.reorderLevel ? 'status-low' : ''}">${status}</td>
     `;
     inventoryTableBody.appendChild(row);
@@ -49,3 +87,24 @@ dashboardData.orders.forEach(order => {
     `;
     ordersTableBody.appendChild(row);
 });
+
+// Customer Order Insights
+const totalOrders = dashboardData.orders.length;
+const statusCounts = dashboardData.orders.reduce((acc, order) => {
+    acc[order.status] = (acc[order.status] || 0) + 1;
+    return acc;
+}, {});
+const deliveredPercentage = ((statusCounts['Delivered'] || 0) / totalOrders * 100).toFixed(1);
+const pendingPercentage = ((statusCounts['Pending'] || 0) / totalOrders * 100).toFixed(1);
+const cancelledPercentage = ((statusCounts['Cancelled'] || 0) / totalOrders * 100).toFixed(1);
+document.getElementById('delivered-percentage').textContent = deliveredPercentage;
+document.getElementById('pending-percentage').textContent = pendingPercentage;
+document.getElementById('cancelled-percentage').textContent = cancelledPercentage;
+
+// Most Frequent Customer
+const customerCounts = dashboardData.orders.reduce((acc, order) => {
+    acc[order.customer] = (acc[order.customer] || 0) + 1;
+    return acc;
+}, {});
+const frequentCustomer = Object.keys(customerCounts).reduce((a, b) => customerCounts[a] > customerCounts[b] ? a : b);
+document.getElementById('frequent-customer').textContent = `${frequentCustomer} (${customerCounts[frequentCustomer]} orders)`;
