@@ -103,11 +103,22 @@ document.getElementById('delivered-percentage').textContent = deliveredPercentag
 document.getElementById('pending-percentage').textContent = pendingPercentage;
 document.getElementById('cancelled-percentage').textContent = cancelledPercentage;
 
-// Most Frequent Customer
+// Most Frequent Customer with Date-Based Tiebreaker
 const customerCounts = dashboardData.orders.reduce((acc, order) => {
     acc[order.customer] = (acc[order.customer] || 0) + 1;
     return acc;
 }, {});
-const frequentCustomer = Object.keys(customerCounts).reduce((a, b) => customerCounts[a] > customerCounts[b] ? a : customerCounts[a] === customerCounts[b] ? (a < b ? a : b) : b);
+const latestOrderDates = dashboardData.orders.reduce((acc, order) => {
+    if (!acc[order.customer] || order.date > acc[order.customer]) {
+        acc[order.customer] = order.date;
+    }
+    return acc;
+}, {});
+const frequentCustomer = Object.keys(customerCounts).reduce((a, b) => {
+    if (customerCounts[a] > customerCounts[b]) return a;
+    if (customerCounts[a] < customerCounts[b]) return b;
+    // Tiebreaker: latest order date
+    return latestOrderDates[a] > latestOrderDates[b] ? a : b;
+});
 document.getElementById('frequent-customer').textContent = `${frequentCustomer} (${customerCounts[frequentCustomer]} orders)`;
 console.log('Frequent Customer:', frequentCustomer, customerCounts[frequentCustomer]); // Debug log
