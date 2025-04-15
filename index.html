@@ -9,12 +9,14 @@
     <title>Eggs & Oil Hub | Operations Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Header -->
     <header class="dashboard-header">
         <h1>Eggs & Oil Hub Operations Dashboard</h1>
-        <p>Tracking sales, inventory, and orders as of April 15, 2025</p>
+        <p>Tracking sales, inventory, and orders for April 2025</p>
     </header>
 
     <!-- Sales Summary Section -->
@@ -37,6 +39,12 @@
             <p><strong>Total Orders:</strong> <span id="total-orders"></span></p>
             <p><strong>Top Selling Item:</strong> <span id="top-selling-item"></span></p>
         </div>
+        <!-- Sales Insights -->
+        <div class="insights">
+            <h3>Sales Insights</h3>
+            <canvas id="sales-chart" height="100"></canvas>
+            <p><strong>Best Performing Product:</strong> <span id="best-product"></span></p>
+        </div>
     </section>
 
     <!-- Inventory Tracker Section -->
@@ -51,7 +59,8 @@
                     <th>Stock Out</th>
                     <th>Closing Stock</th>
                     <th>Reorder Level</th>
-                    <th>Status</th>
+                    <th>Stock Indicator</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody id="inventory-table-body"></tbody>
@@ -74,6 +83,14 @@
             </thead>
             <tbody id="orders-table-body"></tbody>
         </table>
+        <!-- Customer Order Insights -->
+        <div class="insights">
+            <h3>Order Insights</h3>
+            <p><strong>Delivered Orders:</strong> <span id="delivered-percentage"></span>%</p>
+            <p><strong>Pending Orders:</strong> <span id="pending-percentage"></span>%</p>
+            <p><strong>Cancelled Orders:</strong> <span id="cancelled-percentage"></span>%</p>
+            <p><strong>Most Frequent Customer:</strong> <span id="frequent-customer"></span></p>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -85,19 +102,35 @@
     <script>
         const dashboardData = {
             sales: [
-                { date: "2025-04-15", product: "Eggs Tray", quantitySold: 5, unitPrice: 30, totalSales: 150 },
-                { date: "2025-04-15", product: "Pure Oil 1L", quantitySold: 3, unitPrice: 20, totalSales: 60 }
+                { date: "2025-04-01", product: "Eggs Tray", quantitySold: 3, unitPrice: 30, totalSales: 90 },
+                { date: "2025-04-02", product: "Pure Oil 1L", quantitySold: 2, unitPrice: 20, totalSales: 40 },
+                { date: "2025-04-04", product: "Eggs Tray", quantitySold: 4, unitPrice: 30, totalSales: 120 },
+                { date: "2025-04-05", product: "Pure Oil 1L", quantitySold: 1, unitPrice: 20, totalSales: 20 },
+                { date: "2025-04-07", product: "Eggs Tray", quantitySold: 2, unitPrice: 30, totalSales: 60 },
+                { date: "2025-04-09", product: "Pure Oil 1L", quantitySold: 3, unitPrice: 20, totalSales: 60 },
+                { date: "2025-04-10", product: "Eggs Tray", quantitySold: 5, unitPrice: 30, totalSales: 150 },
+                { date: "2025-04-12", product: "Pure Oil 1L", quantitySold: 2, unitPrice: 20, totalSales: 40 },
+                { date: "2025-04-14", product: "Eggs Tray", quantitySold: 1, unitPrice: 30, totalSales: 30 },
+                { date: "2025-04-15", product: "Pure Oil 1L", quantitySold: 4, unitPrice: 20, totalSales: 80 }
             ],
             inventory: [
-                { product: "Eggs Tray", openingStock: 50, stockIn: 0, stockOut: 5, closingStock: 45, reorderLevel: 10 },
-                { product: "Pure Oil 1L", openingStock: 30, stockIn: 0, stockOut: 3, closingStock: 27, reorderLevel: 5 }
+                { product: "Eggs Tray", openingStock: 50, stockIn: 0, stockOut: 15, closingStock: 35, reorderLevel: 10 },
+                { product: "Pure Oil 1L", openingStock: 30, stockIn: 0, stockOut: 12, closingStock: 18, reorderLevel: 5 }
             ],
             orders: [
-                { date: "2025-04-15", customer: "Ama Mensah", product: "Eggs Tray", quantity: 2, contact: "0541234567", status: "Delivered" },
-                { date: "2025-04-15", customer: "Kofi Asamoah", product: "Pure Oil 1L", quantity: 1, contact: "0249876543", status: "Pending" }
+                { date: "2025-04-01", customer: "Kwame Boateng", product: "Eggs Tray", quantity: 3, contact: "0549876543", status: "Delivered" },
+                { date: "2025-04-02", customer: "Efia Amoako", product: "Pure Oil 1L", quantity: 2, contact: "0241234567", status: "Pending" },
+                { date: "2025-04-04", customer: "Yaw Osei", product: "Eggs Tray", quantity: 4, contact: "0576543210", status: "Delivered" },
+                { date: "2025-04-05", customer: "Abena Serwaa", product: "Pure Oil 1L", quantity: 1, contact: "0557891234", status: "Cancelled" },
+                { date: "2025-04-07", customer: "Kofi Mensah", product: "Eggs Tray", quantity: 2, contact: "0265432198", status: "Delivered" },
+                { date: "2025-04-09", customer: "Adwoa Nyarko", product: "Pure Oil 1L", quantity: 3, contact: "0598765432", status: "Pending" },
+                { date: "2025-04-10", customer: "Esi Agyeman", product: "Eggs Tray", quantity: 5, contact: "0543219876", status: "Delivered" },
+                { date: "2025-04-12", customer: "Kwesi Appiah", product: "Pure Oil 1L", quantity: 2, contact: "0249871234", status: "Delivered" },
+                { date: "2025-04-14", customer: "Ama Gyamfi", product: "Eggs Tray", quantity: 1, contact: "0571237890", status: "Pending" },
+                { date: "2025-04-15", customer: "Kojo Danso", product: "Pure Oil 1L", quantity: 4, contact: "0554567890", status: "Delivered" }
             ],
             summary: [
-                { date: "2025-04-15", totalSales: 210, totalOrders: 8, topSellingItem: "Eggs Tray" }
+                { date: "2025-04-15", totalSales: 690, totalOrders: 10, topSellingItem: "Eggs Tray" }
             ]
         };
     </script>
