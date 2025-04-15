@@ -84,6 +84,7 @@ tr:nth-child(even) td {
     gap: 2rem;
     justify-content: center;
     flex-wrap: wrap;
+    margin-bottom: 2rem;
 }
 
 .summary-stats p {
@@ -93,6 +94,48 @@ tr:nth-child(even) td {
 
 .summary-stats strong {
     color: #1a2a44;
+}
+
+/* Insights Sections */
+.insights {
+    margin-top: 2rem;
+}
+
+.insights h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a2a44;
+    margin-bottom: 1rem;
+}
+
+.insights p {
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+.insights strong {
+    color: #1a2a44;
+}
+
+/* Sales Chart */
+#sales-chart {
+    max-width: 100%;
+    margin: 1rem 0;
+}
+
+/* Inventory Stock Indicator */
+.stock-bar {
+    display: inline-block;
+    height: 10px;
+    border-radius: 5px;
+}
+
+.stock-bar.low {
+    background: #ff6f61;
+}
+
+.stock-bar.safe {
+    background: #2c3e50;
 }
 
 /* Footer */
@@ -127,5 +170,9 @@ tr:nth-child(even) td {
     .summary-stats {
         flex-direction: column;
         gap: 1rem;
+    }
+
+    .insights {
+        text-align: center;
     }
 }
